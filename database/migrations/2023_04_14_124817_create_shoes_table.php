@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('model', 100);
             $table->string('material', 100)->nullable();
             $table->string('color', 20);
-            $table->string('number');
             $table->decimal('price', 6, 2);
             $table->text('description')->nullable();
             $table->boolean('is_available')->default(0);
