@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Shoe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ShoeController extends Controller
 {
@@ -40,8 +41,9 @@ class ShoeController extends Controller
     {
         $shoe = new Shoe;
         $data = $request->all();
-        $shoe->fill($data);
-        $data['is_available'] = $request->has('is_available' ? 1 : 0);
+        $data_validate = $this->validation($data);
+        $shoe->fill($data_validate);
+        $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
         $shoe->save();
         return to_route('admin.shoes.show', $shoe)->with('message', 'Scarpa creata');
     }
@@ -65,7 +67,7 @@ class ShoeController extends Controller
      */
     public function edit(Shoe $shoe)
     {
-        //
+        return view('admin.shoes.form', compact('shoe'));
     }
 
     /**
@@ -77,7 +79,11 @@ class ShoeController extends Controller
      */
     public function update(Request $request, Shoe $shoe)
     {
-        //
+        $data = $request->all();
+        $data_validate = $this->validation($data);
+        $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
+        $shoe->update($data_validate);
+        return view('admin.shoes.show', compact('shoe'))->with('message', 'Scarpa modificata con successo');;
     }
 
     /**
@@ -88,6 +94,51 @@ class ShoeController extends Controller
      */
     public function destroy(Shoe $shoe)
     {
-        //
+        $shoe->delete();
+        return to_route('admin.shoes.index')->with('message', 'Scarpa eliminata!')
+            ->with('message-type', 'danger');
+    }
+    // Validazione
+    private function validation($data)
+    {
+        $validator = Validator::make(
+            $data,
+            [
+                'brand' => 'required|string|max:50',
+                'model' => 'required|string|max:100',
+                'material' => 'string|max:100|nullable',
+                'image' => 'nullable|image|mimes:jpg,png,jpeg',
+                'color' => 'required|string|max:20',
+                'price' => 'required|decimal:2',
+                'description' => 'string',
+                'is_available' => 'boolean',
+            ],
+            [
+                'brand.required' => 'Il brand è obbligatorio',
+                'brand.string' => 'Il brand deve essere una stringa',
+                'brand.max' => 'Il testo deve avere massimo 50 caratteri',
+
+                'model.required' => 'Il modello è obbligatorio',
+                'model.string' => 'Il modello deve essere una stringa',
+                'model.max' => 'Il testo deve avere massimo 100 caratteri',
+
+                'material.string' => 'Il materiale deve essere una stringa',
+                'material.max' => 'Il testo deve avere massimo 100 caratteri',
+
+                'image.image' => 'Inserisci un file',
+                'image.mimes' => 'I formati accettati sono: jpg, png or jpeg',
+
+                'color.required' => 'Il colore è obbligatorio',
+                'color.string' => 'Il colore deve essere una stringa',
+                'color.max' => 'Il testo deve avere massimo 20 caratteri',
+
+                'price.required' => 'Il prezzo è obbligatorio',
+                'price.decimal' => 'Il prezzo deve essere un numero',
+
+                'description.string' => 'La descrizione deve essere una stringa',
+
+            ]
+        )->validate();
+        return $validator;
     }
 }
