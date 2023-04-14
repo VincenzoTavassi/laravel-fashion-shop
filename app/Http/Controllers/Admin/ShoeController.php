@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Shoe;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ShoeController extends Controller
      */
     public function index()
     {
-        //
+        $shoes = Shoe::Paginate(10);
+        return view('admin.shoes.index', compact('shoes'));
     }
 
     /**

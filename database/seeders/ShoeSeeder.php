@@ -22,7 +22,6 @@ class ShoeSeeder extends Seeder
             $shoe->model = $faker->streetName();
             $shoe->material = $faker->word();
             $shoe->color = $faker->colorName();
-            $shoe->number = $faker->numberBetween(35, 49);
             $shoe->price = $faker->randomFloat(2, 10, 9999);
             $shoe->description = $faker->paragraph(5);
             $shoe->is_available = $faker->boolean();

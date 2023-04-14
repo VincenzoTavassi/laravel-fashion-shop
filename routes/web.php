@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\Admin\ShoeController;
 use App\Http\Controllers\Guest\HomeController as GuestHomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,15 +20,17 @@ use Illuminate\Support\Facades\Route;
 // # Guest route
 Route::get( '/',    [GuestHomeController::class,    'homepage'  ])->name('homepage');
 
+// Admin route
+Route::get('/home', [AdminHomeController::class, 'index'])->middleware('auth')->name('home');
+
 // # Protected routes
 Route::middleware('auth')
     ->prefix('admin')   // * routes url start with "/admin." 
     ->name('admin.')    // * routes name start with "admin." 
     ->group(
         function () {
-            Route::get( '/dashboard',   [AdminHomeController::class,    'dashboard' ])->name('dashboard');
-        }
-    );
+            Route::resource( 'shoes', ShoeController::class);
+        });
 
 // ! Generated routes, do not touch
 // # Protected profile's routes
