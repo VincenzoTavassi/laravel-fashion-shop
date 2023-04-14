@@ -9,10 +9,50 @@
         <table class="table my-3">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Modello</th>
-                    <th scope="col">Prezzo</th>
+                    <th scope="col">
+                        <a href="{{route('admin.shoes.index')}}?sort=id&order={{$sort=='id' && $order != 'desc' ? 'desc' : 'asc'}}">
+                            ID
+                        </a>
+                        @if($sort == 'id')
+                        <a href="{{route('admin.shoes.index')}}?sort=id&order={{$sort=='id' && $order != 'desc' ? 'desc' : 'asc'}}">
+                            <i class="fa-solid fa-caret-down ms-2 d-inline-block @if ($order == 'desc') rotate-180 @endif">
+                            </i>
+                        </a>    
+                        @endif
+                    </th>
+                    <th scope="col">
+                        <a href="{{route('admin.shoes.index')}}?sort=brand&order={{$sort=='brand' && $order != 'desc' ? 'desc' : 'asc'}}">
+                            Brand
+                            @if($sort == 'brand')
+                            <a href="{{route('admin.shoes.index')}}?sort=brand&order={{$sort=='brand' && $order != 'desc' ? 'desc' : 'asc'}}">
+                                <i class="fa-solid fa-caret-down ms-2 d-inline-block @if ($order == 'desc') rotate-180 @endif">
+                                </i>
+                            </a>    
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="{{route('admin.shoes.index')}}?sort=model&order={{$sort=='model' && $order != 'desc' ? 'desc' : 'asc'}}">
+                            Modello
+                            @if($sort == 'model')
+                            <a href="{{route('admin.shoes.index')}}?sort=model&order={{$sort=='model' && $order != 'desc' ? 'desc' : 'asc'}}">
+                                <i class="fa-solid fa-caret-down ms-2 d-inline-block @if ($order == 'desc') rotate-180 @endif">
+                                </i>
+                            </a>    
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="{{route('admin.shoes.index')}}?sort=price&order={{$sort=='price' && $order != 'desc' ? 'desc' : 'asc'}}">
+                            Prezzo
+                            @if($sort == 'price')
+                            <a href="{{route('admin.shoes.index')}}?sort=price&order={{$sort=='price' && $order != 'desc' ? 'desc' : 'asc'}}">
+                                <i class="fa-solid fa-caret-down ms-2 d-inline-block @if ($order == 'desc') rotate-180 @endif">
+                                </i>
+                            </a>    
+                            @endif
+                        </a>
+                    </th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -29,7 +69,6 @@
                                     class="fa-solid fa-pen-to-square ms-3"></i></a>
                             <button class="fa-solid fa-trash btn-icon ms-3 text-danger" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal-{{ $shoe->id }}">
-                                {{-- <i class="fa-solid fa-trash"></i> --}}
                             </button>
                         </td>
                     </tr>
