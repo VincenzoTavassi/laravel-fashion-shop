@@ -4,6 +4,7 @@
   <section class="container">
 
     <h1 class="my-3">Scarpe</h1>
+    <a href="{{ route('admin.shoes.create') }}" class="btn btn-primary">Crea</a>
 
     <table class="table my-3">
       <thead>
@@ -22,7 +23,9 @@
             <td>{{ $shoe->brand }}</td>
             <td>{{ $shoe->model }}</td>
             <td>€ {{ $shoe->price }}</td>
-            <td>Dettaglio</td>
+            <td>
+              <a href="{{ route('admin.shoes.show', $shoe) }}">Dettaglio</a>
+            </td>
           </tr>
         @empty
           <h2>Non ci sono scarpe</h2>
