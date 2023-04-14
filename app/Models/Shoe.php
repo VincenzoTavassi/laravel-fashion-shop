@@ -18,4 +18,8 @@ class Shoe extends Model
     protected function getUpdatedAtAttribute($value) {
         return date('d/m/y h:i', strtotime($value));
     }
+
+    public function getImageUri() {
+        return $this->image ? asset('storage/' . $this->image) : 'https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png';
+    }
 }

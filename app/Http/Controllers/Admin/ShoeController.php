@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Shoe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 class ShoeController extends Controller
 {
@@ -49,6 +51,10 @@ class ShoeController extends Controller
         $data_validate = $this->validation($data);
         $shoe->fill($data_validate);
         $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
+        if(Arr::exists($data_validate, 'image')) {
+            $path = Storage::put('uploads', $data_validate['image']);
+            $data_validate['image'] = $path;
+        }
         $shoe->save();
         return to_route('admin.shoes.show', $shoe)->with('message', 'Scarpa creata');
     }
@@ -87,6 +93,11 @@ class ShoeController extends Controller
         $data = $request->all();
         $data_validate = $this->validation($data);
         $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
+        if(Arr::exists($data_validate, 'image')) {
+            if($shoe->image) Storage::delete($shoe->image);
+            $path = Storage::put('uploads', $data_validate['image']);
+            $data_validate['image'] = $path;
+        }
         $shoe->update($data_validate);
         return view('admin.shoes.show', compact('shoe'))->with('message', 'Scarpa modificata con successo');;
     }

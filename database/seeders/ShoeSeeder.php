@@ -21,7 +21,7 @@ class ShoeSeeder extends Seeder
             $shoe->brand = $faker->company();
             $shoe->model = $faker->streetName();
             $shoe->material = $faker->word();
-            $shoe->image = $faker->imageUrl(640, 480, 'shoe', true);
+            // $shoe->image = $faker->imageUrl(640, 480, 'shoe', true);
             $shoe->color = $faker->colorName();
             $shoe->price = $faker->randomFloat(2, 10, 9999);
             $shoe->description = $faker->paragraph(5);
