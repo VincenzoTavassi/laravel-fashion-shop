@@ -26,7 +26,8 @@ class ShoeController extends Controller
      */
     public function create()
     {
-        //
+        $shoe = new Shoe;
+        return view('admin.shoes.form', compact('shoe'));
     }
 
     /**
@@ -37,7 +38,12 @@ class ShoeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $shoe = new Shoe;
+        $data = $request->all();
+        $shoe->fill($data);
+        $data['is_available'] = $request->has('is_available' ? 1 : 0);
+        $shoe->save();
+        return to_route('admin.shoes.show', $shoe)->with('message', 'Scarpa creata');
     }
 
     /**
@@ -48,7 +54,7 @@ class ShoeController extends Controller
      */
     public function show(Shoe $shoe)
     {
-        //
+        return view('admin.shoes.show', compact('shoe'));
     }
 
     /**
