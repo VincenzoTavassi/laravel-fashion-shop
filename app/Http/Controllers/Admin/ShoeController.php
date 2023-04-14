@@ -109,7 +109,7 @@ class ShoeController extends Controller
                 'material' => 'string|max:100|nullable',
                 'image' => 'nullable|image|mimes:jpg,png,jpeg',
                 'color' => 'required|string|max:20',
-                'price' => 'required|decimal:2',
+                'price' => 'required|numeric|max:9999.99',
                 'description' => 'string',
                 'is_available' => 'boolean',
             ],
@@ -134,6 +134,7 @@ class ShoeController extends Controller
 
                 'price.required' => 'Il prezzo è obbligatorio',
                 'price.decimal' => 'Il prezzo deve essere un numero',
+                'price.max' => 'Il prezzo massimo deve essere di €9999.99',
 
                 'description.string' => 'La descrizione deve essere una stringa',
 
