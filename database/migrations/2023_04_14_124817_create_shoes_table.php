@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('brand', 50);
             $table->string('model', 100);
             $table->string('material', 100)->nullable();
-            $table->string('image')->default('https://picsum.photos/300/500');
+            $table->string('image')->nullable();
             $table->string('color', 20);
             $table->decimal('price', 6, 2);
             $table->text('description')->nullable();
