@@ -26,7 +26,7 @@ class Shoe extends Model
     public function getImage()
     {
         if (empty($this->image)) { // Se l'immagine è indefinita, ritorna il placeholder
-            return asset('storage/img/placeholder.png');
+            return 'https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png';
         } elseif (str_starts_with($this->image, 'http')) { // Se l'immagine è una URL ritorna la URL
             return $this->image;
         } else {
