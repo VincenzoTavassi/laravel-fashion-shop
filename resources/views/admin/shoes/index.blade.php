@@ -20,6 +20,7 @@
                         </a>    
                         @endif
                     </th>
+                <th scope="col">Anteprima</th>
                     <th scope="col">
                         <a href="{{route('admin.shoes.index')}}?sort=brand&order={{$sort=='brand' && $order != 'desc' ? 'desc' : 'asc'}}">
                             Brand
@@ -60,6 +61,7 @@
                 @forelse($shoes as $shoe)
                     <tr>
                         <th scope="row">{{ $shoe->id }}</th>
+                        <td><img src="{{$shoe->getImage()}}" width="100px" alt=""></td>
                         <td>{{ $shoe->brand }}</td>
                         <td>{{ $shoe->model }}</td>
                         <td>€ {{ $shoe->price }}</td>
