@@ -6,8 +6,8 @@
 
         <a href="{{ route('admin.shoes.index') }}" class="btn btn-primary my-3">Torna alla lista</a>
         <div class="card">
-            <img src="{{ $shoe->getImage() }}" class="card-img-top" alt="Shoe image">
-            <div class="card-body">
+            <div class="card-body clearfix">
+                <img src="{{ $shoe->getImage() }}" class="float-end w-50 ms-2" alt="Shoe image">
                 <h5 class="card-title">{{ $shoe->model }}</h5>
                 <p class="card-text">Brand: {{ $shoe->brand }}</p>
                 <p class="card-text">Materiale: {{ $shoe->material }}</p>
