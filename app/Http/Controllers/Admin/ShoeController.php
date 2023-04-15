@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Shoe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ShoeController extends Controller
 {
@@ -18,10 +20,10 @@ class ShoeController extends Controller
     {
         $sort = (!empty($sort_request = $request->get('sort'))) ? $sort_request : 'updated_at';
 
-        $order = (!empty($order_request = $request->get('order'))) ?$order_request : 'desc';
+        $order = (!empty($order_request = $request->get('order'))) ? $order_request : 'desc';
 
         $shoes = Shoe::orderBy($sort, $order)->paginate(10)->withQueryString();
-        
+
         return view('admin.shoes.index', compact('shoes', 'order', 'sort'));
     }
 
@@ -47,6 +49,10 @@ class ShoeController extends Controller
         $shoe = new Shoe;
         $data = $request->all();
         $data_validate = $this->validation($data);
+        if (Arr::exists($data_validate, 'image')) { // Se c'è un'immagine nell'array $data_validate
+            $path = Storage::put('uploads', $data_validate['image']); // Ottieni il path e salvala nella cartella uploads
+            $data_validate['image'] = $path; // Il dato da salvare in db diventa il path dell'immagine
+        }
         $shoe->fill($data_validate);
         $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
         $shoe->save();
