@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2 class="my-4">{{ $shoe->id ? 'Modifica - ' . $shoe->title : 'Aggiungi una scarpa' }}
+        <h2 class="my-4">{{ $shoe->id ? 'Modifica - ' . $shoe->model : 'Aggiungi una scarpa' }}
         </h2>
         <div class="card">
             <div class="card-body">
