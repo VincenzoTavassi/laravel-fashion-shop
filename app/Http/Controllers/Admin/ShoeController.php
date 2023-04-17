@@ -104,17 +104,71 @@ class ShoeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft deletes the specified resource from storage.
      *
      * @param  \App\Models\Shoe  $shoe
      * @return \Illuminate\Http\Response
      */
     public function destroy(Shoe $shoe)
     {
+        // if ($shoe->image) Storage::delete($shoe->image);
         $shoe->delete();
-        return to_route('admin.shoes.index')->with('message', 'Scarpa eliminata!')
+        return to_route('admin.shoes.index')->with('message', 'Scarpa spostata nel cestino!')
             ->with('message-type', 'danger');
     }
+
+    /**
+     * Force deletes the specified resource from storage.
+     *
+     * @param  \App\Models\Shoe  $shoe
+     * @return \Illuminate\Http\Response
+     */
+    public function forcedelete(Int $id)
+    {
+        $shoe = Shoe::where('id', $id)->onlyTrashed()->first();
+        if ($shoe->image) Storage::delete($shoe->image);
+        $shoe->forceDelete();
+        return to_route('admin.shoes.trash')->with('message', 'Scarpa eliminata definitivamente!')
+            ->with('message-type', 'danger');
+    }
+
+    /**
+     * Restores the specified resource from storage.
+     *
+     * @param  \App\Models\Shoe  $shoe
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Int $id)
+    {
+        $shoe = Shoe::where('id', $id)->onlyTrashed()->first();
+        $shoe->restore();
+        return to_route('admin.shoes.index')->with('message', 'Scarpa ripristinata!');
+    }
+
+    /**
+     * Display a listing of the trashed resources.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash(Request $request)
+    {
+        $sort = (!empty($sort_request = $request->get('sort'))) ? $sort_request : 'updated_at';
+
+        $order = (!empty($order_request = $request->get('order'))) ? $order_request : 'desc';
+
+        $trashedshoes = Shoe::onlyTrashed()->orderBy($sort, $order)->paginate(10)->withQueryString();
+        // @dd($trashedshoes);
+
+        return view('admin.shoes.index', compact('trashedshoes', 'order', 'sort'));
+    }
+
+
+
+    // ******************
+    //   FUNCTIONS 
+    // ******************
+
+
     // Validazione
     private function validation($data)
     {
