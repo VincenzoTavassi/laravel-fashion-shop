@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('price', 6, 2);
             $table->text('description')->nullable();
             $table->boolean('is_available')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
