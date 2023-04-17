@@ -45,6 +45,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    @if($shoe->image) <img src="{{$shoe->getImage()}}" alt="" class="d-block" id="image-preview" width="300px"> @endif
                     <label for="image" class="form-label">Immagine</label>
                     <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
                         name="image" value="{{ old('image', $shoe->image) }}">
@@ -103,4 +104,24 @@
             </div>
         </div>
     </div>
+    @endsection
+
+    @section('scripts')
+    <script>
+        const imageEl = document.getElementById('image');
+        const imagePreviewEl = document.getElementById('image-preview');
+        const imagePlaceholder = imagePreviewEl.src;
+        imageEl.addEventListener(
+            'change', () => {
+                if (imageEl.files && imageEl.files[0]) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(imageEl.files[0]);
+                    reader.onload = e => {
+                        imagePreviewEl.src = e.target.result;
+                    }
+                } else {
+                    imagePreviewEl.src = imagePlaceholder;
+                }
+            });
+    </script>
 @endsection
