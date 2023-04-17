@@ -126,6 +126,10 @@
         @if(isset($shoes))
         {{ $shoes->links() }}
         @endif
+        @if(isset($trashedshoes))
+        {{ $trashedshoes->links() }}
+        @endif
+
     </section>
 @endsection
 
@@ -153,7 +157,7 @@
                         <form action="{{ route('admin.shoes.forcedelete', $shoe->id) }}" method="POST" class="">
                             @method('delete')
                             @csrf
-
+                            <input type="hidden" name="page" value="{{$trashedshoes->currentPage()}}">
                             <button type="submit" class="btn btn-danger">Elimina</button>
                         </form>
                     </div>
@@ -204,11 +208,13 @@
                         <strong> {{ $shoe->id }}</strong>?
                     </div>
                     <div class="modal-footer">
+                        
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-
+                        
                         <form action="{{ route('admin.shoes.destroy', $shoe) }}" method="POST" class="">
                             @method('delete')
                             @csrf
+                            <input type="hidden" name="page" value="{{$shoes->currentPage()}}">
 
                             <button type="submit" class="btn btn-danger">Elimina</button>
                         </form>

@@ -109,11 +109,16 @@ class ShoeController extends Controller
      * @param  \App\Models\Shoe  $shoe
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Shoe $shoe)
+    public function destroy(Shoe $shoe, Request $request)
     {
-        // if ($shoe->image) Storage::delete($shoe->image);
         $shoe->delete();
-        return to_route('admin.shoes.index')->with('message', 'Scarpa spostata nel cestino!')
+
+        // Redirect all'ultima pagina disponibile
+        $paginator = Shoe::paginate(10);
+        // Se la pagina del $request è minore uguale all'ultima disponibile OK, altrimenti redirect all'ultima disponibile
+        $redirectToPage = ($request->page <= $paginator->lastPage()) ? $request->page : $paginator->lastPage();
+        return to_route('admin.shoes.index', ['page' => $redirectToPage])
+            ->with('message', 'Prodotto spostato nel cestino!')
             ->with('message-type', 'danger');
     }
 
@@ -130,6 +135,16 @@ class ShoeController extends Controller
         $shoe->forceDelete();
         return to_route('admin.shoes.trash')->with('message', 'Scarpa eliminata definitivamente!')
             ->with('message-type', 'danger');
+        // $paginator = Shoe::paginate(10);
+        // $paginator = Shoe::onlyTrashed()->get();
+        // dd($paginator->last());
+        // Se la pagina del $request è minore uguale all'ultima disponibile OK, altrimenti redirect all'ultima disponibile
+        // $redirectToPage = ($request->page <= $paginator->lastPage()) ? $request->page : $paginator->lastPage() - 1;
+        // return to_route('admin.shoes.trash', ['page' => $redirectToPage])
+        // ->with('message', 'Prodotto eliminato definitivamente!')
+        // ->with('message-type', 'danger');
+        // return to_route('admin.shoes.trash')->with('message', 'Scarpa eliminata definitivamente!')
+        //     ->with('message-type', 'danger');
     }
 
     /**
