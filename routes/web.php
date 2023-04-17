@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 // # Guest route
 Route::get('/',    [GuestHomeController::class,    'homepage'])->name('homepage');
+Route::get('/shoes',    [GuestHomeController::class,    'showdetail'])->name('guest.detail');
 
 // Admin route
 Route::get('/home', [AdminHomeController::class, 'index'])->middleware('auth')->name('home');
