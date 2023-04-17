@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // # Guest route
-Route::get( '/',    [GuestHomeController::class,    'homepage'  ])->name('homepage');
+Route::get('/',    [GuestHomeController::class,    'homepage'])->name('homepage');
 
 // Admin route
 Route::get('/home', [AdminHomeController::class, 'index'])->middleware('auth')->name('home');
@@ -29,8 +29,12 @@ Route::middleware('auth')
     ->name('admin.')    // * routes name start with "admin." 
     ->group(
         function () {
-            Route::resource( 'shoes', ShoeController::class);
-        });
+            Route::get('shoes/trash', [ShoeController::class, 'trash'])->name('shoes.trash');
+            Route::put('shoes/{shoe}/restore', [ShoeController::class, 'restore'])->name('shoes.restore');
+            Route::delete('shoes/{shoe}/forcedelete', [ShoeController::class, 'forcedelete'])->name('shoes.forcedelete');
+            Route::resource('shoes', ShoeController::class);
+        }
+    );
 
 // ! Generated routes, do not touch
 // # Protected profile's routes
@@ -39,9 +43,9 @@ Route::middleware('auth')
     ->name('profile.')       // * routes name start with "profile." 
     ->group(
         function () {
-            Route::get(     '/', [ProfileController::class, 'edit'      ])->name('edit');
-            Route::patch(   '/', [ProfileController::class, 'update'    ])->name('update');
-            Route::delete(  '/', [ProfileController::class, 'destroy'   ])->name('destroy');
+            Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+            Route::patch('/', [ProfileController::class, 'update'])->name('update');
+            Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
         }
     );
 
