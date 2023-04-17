@@ -92,6 +92,12 @@ class ShoeController extends Controller
     {
         $data = $request->all();
         $data_validate = $this->validation($data);
+        if (Arr::exists($data_validate, 'image')) { // Se c'è un'immagine nell'array $data_validate
+            if ($shoe->image) Storage::delete($shoe->image);
+            $path = Storage::put('uploads', $data_validate['image']); // Ottieni il path e salvala nella cartella uploads
+            $data_validate['image'] = $path; // Il dato da salvare in db diventa il path dell'immagine
+
+        }
         $data_validate['is_available'] = $request->has('is_available' ? 1 : 0);
         $shoe->update($data_validate);
         return view('admin.shoes.show', compact('shoe'))->with('message', 'Scarpa modificata con successo');;
